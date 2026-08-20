@@ -33,7 +33,8 @@ st.write('Un amor que se ganó con valentía. En lo alto de los árboles, una ba
          'instinto y coraje terminó uniendo a dos pequeños periquitos. Él, el de matices azules, se enfrentó'
          'a otro macho por el amor de ella, y aunque no fue el más fuerte, metafóricamente fue quien mostró'
          'su mejor versión. Hoy comparten una rama, un refugio y la tranquilidad de estar juntos. La imagen'
-         'representa el amor, el valor y la compañía, recordándonos que, a veces, el amor no se encuentra… se conquista.
+         'representa el amor, el valor y la compañía, recordándonos que, a veces, el amor no se encuentra… se conquista.'
+         '
          
          'Esta fotografía fue tomada el 19 de agosto de 2026, al salir de la universidad mientras regresaba a casa, en'
          'un encuentro inesperado con una pequeña historia de amor en medio del camino. ' 
