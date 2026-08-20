@@ -35,12 +35,10 @@ st.write('Un amor que se ganó con valentía. En lo alto de los árboles, una ba
          'su mejor versión. Hoy comparten una rama, un refugio y la tranquilidad de estar juntos. La imagen'
          'representa el amor, el valor y la compañía, recordándonos que, a veces, el amor no se encuentra… se conquista.'
          'Esta fotografía fue tomada el 19 de agosto de 2026, al salir de la universidad mientras regresaba a casa, en'
-         'un encuentro inesperado con una pequeña historia de amor en medio del camino. ' 
-         '  '
-         'Autoría: Simón Mesa Díaz'
+         'un encuentro inesperado con una pequeña historia de amor en medio del camino. ')
         
-        )
-           
+st.write('Autoría: Simón Mesa Díaz')
+        
 st.markdown(f"Quieres escucharlo?, copia el texto")
 text = st.text_area("Ingrese El texto a escuchar.")
 
