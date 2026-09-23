@@ -49,7 +49,7 @@ st.write('En el mundo de los animales vivía una liebre muy orgullosa, porque an
         )
 
 image = Image.open('gato_raton.png')
-st.image(image, width=350)
+st.image(image, width=600)
 with st.sidebar:
     st.subheader("Esrcibe y/o selecciona texto para ser escuchado.")
 
