@@ -8,6 +8,7 @@ from PIL import Image
 import base64
 
 st.title("Conversión de Texto a Audio")
+st.subheader('Hecho por: Simón Mesa Díaz')
 image = Image.open('LiebreTortuga.jpg')
 st.image(image, width=600)
 
