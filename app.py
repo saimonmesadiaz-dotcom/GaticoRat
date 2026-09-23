@@ -18,7 +18,7 @@ except:
 
 st.subheader("Una pequeña Fábula.")
 st.write('En el mundo de los animales vivía una liebre muy orgullosa, porque ante todos decía que era la más veloz.'  
-         'Por eso, constantemente se reía de la lenta tortuga.' 
+         'Por eso, constantemente se reía de la lenta tortuga.\n\n' 
          '  '
          '-¡Miren la tortuga! ¡Eh, tortuga, no corras tanto que te vas a cansar de ir tan de prisa! -decía la liebre riéndose de la tortuga.' 
          '  '
