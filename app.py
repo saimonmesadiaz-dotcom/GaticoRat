@@ -9,7 +9,7 @@ import base64
 
 st.title("Conversión de Texto a Audio")
 image = Image.open('LiebreTortuga.jpg')
-st.image(image, width=350)
+st.image(image, width=600)
 
 try:
     os.mkdir("temp")
