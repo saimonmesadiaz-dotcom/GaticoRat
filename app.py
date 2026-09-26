@@ -6,15 +6,17 @@ from gtts import gTTS
 from PIL import Image
 import base64
 
+
 # =========================================================
 # CONFIGURACIÓN DE LA PÁGINA
 # =========================================================
 
 st.set_page_config(
-    page_title="Fábulas a Audio",
-    page_icon="🐢",
+    page_title="Conversión de Texto a Audio",
+    page_icon=None,
     layout="wide"
 )
+
 
 # =========================================================
 # ESTILOS VISUALES
@@ -23,101 +25,171 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-    /* ===== FONDO GENERAL ===== */
+    /* =====================================================
+       FONDO GENERAL
+       ===================================================== */
 
     .stApp {
-        background: linear-gradient(
-            135deg,
-            #FFF8E7 0%,
-            #F6E7CB 45%,
-            #E8D5B7 100%
-        );
+        background-color: #B8C48A;
     }
 
-    /* ===== QUITAR ESPACIO SUPERIOR EXCESIVO ===== */
+
+    /* =====================================================
+       CONTENEDOR PRINCIPAL
+       ===================================================== */
 
     .block-container {
         padding-top: 2rem;
-        padding-bottom: 3rem;
+        padding-bottom: 2rem;
         max-width: 1100px;
     }
 
-    /* ===== TÍTULO PRINCIPAL ===== */
+
+    /* =====================================================
+       TÍTULO PRINCIPAL
+       ===================================================== */
 
     h1 {
-        color: #4A3520 !important;
+        color: #3E4630 !important;
         text-align: center;
-        font-size: 3rem !important;
-        font-weight: 800 !important;
-        margin-bottom: 0.2rem;
+        font-size: 2.8rem !important;
+        font-weight: 700 !important;
+        margin-bottom: 0.2rem !important;
     }
 
-    /* ===== SUBTÍTULOS ===== */
 
-    h2, h3 {
-        color: #5B4028 !important;
+    /* =====================================================
+       SUBTÍTULOS
+       ===================================================== */
+
+    h2 {
+        color: #4A5038 !important;
+        font-size: 1.6rem !important;
+        margin-top: 0.3rem !important;
+        margin-bottom: 1rem !important;
     }
 
-    /* ===== AUTOR ===== */
+    h3 {
+        color: #4A5038 !important;
+    }
+
+
+    /* =====================================================
+       AUTOR
+       ===================================================== */
 
     .autor {
         text-align: center;
-        color: #876B4A;
-        font-size: 1.1rem;
-        margin-bottom: 2rem;
+        color: #596044;
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
     }
 
-    /* ===== TARJETAS ===== */
+
+    /* =====================================================
+       TARJETAS DE LAS FÁBULAS
+       ===================================================== */
 
     .card {
-        background: rgba(255, 255, 255, 0.88);
-        padding: 2rem;
-        border-radius: 24px;
-        margin-top: 2rem;
-        margin-bottom: 2rem;
-        box-shadow: 0px 8px 25px rgba(74, 53, 32, 0.12);
-        border: 1px solid rgba(255, 255, 255, 0.7);
+        background-color: #E8DCC3;
+        padding: 1.4rem 2rem;
+        border-radius: 18px;
+        margin-top: 1.3rem;
+        margin-bottom: 1.3rem;
+        box-shadow: 0px 5px 15px rgba(60, 65, 40, 0.12);
+        border: 1px solid rgba(90, 85, 60, 0.15);
     }
 
-    /* ===== TEXTO DE LAS FÁBULAS ===== */
+
+    /* =====================================================
+       TEXTO DE LAS FÁBULAS
+       ===================================================== */
 
     .cuento {
-        color: #3F3328;
-        font-size: 1.05rem;
-        line-height: 1.8;
+        color: #39382F;
+        font-size: 1rem;
+        line-height: 1.55;
         text-align: justify;
     }
 
-    /* ===== CAJA DE CONVERSIÓN ===== */
-
-    .audio-card {
-        background: rgba(255, 255, 255, 0.94);
-        padding: 2rem;
-        border-radius: 24px;
-        margin-top: 2rem;
-        box-shadow: 0px 8px 25px rgba(74, 53, 32, 0.14);
+    .cuento p {
+        margin-top: 0;
+        margin-bottom: 0.7rem;
     }
 
-    /* ===== ÁREA DE TEXTO ===== */
+
+    /* =====================================================
+       IMÁGENES
+       ===================================================== */
+
+    [data-testid="stImage"] {
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+
+    /* =====================================================
+       TARJETA DE AUDIO
+       ===================================================== */
+
+    .audio-card {
+        background-color: #E8DCC3;
+        padding: 1.5rem 2rem;
+        border-radius: 18px;
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+        box-shadow: 0px 5px 15px rgba(60, 65, 40, 0.12);
+        border: 1px solid rgba(90, 85, 60, 0.15);
+    }
+
+
+    /* =====================================================
+       TEXTO DE INTRODUCCIÓN
+       ===================================================== */
+
+    .descripcion {
+        color: #555441;
+        font-size: 1rem;
+        margin-bottom: 1rem;
+    }
+
+
+    /* =====================================================
+       TEXT AREA
+       ===================================================== */
 
     textarea {
         color: #222222 !important;
-        background-color: #FFFFFF !important;
-        border-radius: 12px !important;
+        background-color: #F4EBDD !important;
+        border-radius: 10px !important;
     }
 
     textarea::placeholder {
-        color: #777777 !important;
+        color: #77756B !important;
     }
 
-    /* ===== BOTÓN ===== */
+
+    /* =====================================================
+       SELECTBOX
+       ===================================================== */
+
+    div[data-baseweb="select"] > div {
+        background-color: #F4EBDD !important;
+        border-radius: 10px !important;
+        color: #222222 !important;
+    }
+
+
+    /* =====================================================
+       BOTÓN
+       ===================================================== */
 
     .stButton > button {
-        background-color: #8B5E3C;
-        color: white;
+        background-color: #69734A;
+        color: #F4EBDD;
         border: none;
-        border-radius: 14px;
-        padding: 0.65rem 1.5rem;
+        border-radius: 10px;
+        padding: 0.6rem 1.5rem;
         font-size: 1rem;
         font-weight: 600;
         transition: 0.2s;
@@ -125,56 +197,61 @@ st.markdown("""
     }
 
     .stButton > button:hover {
-        background-color: #6F472C;
-        color: white;
-        transform: translateY(-2px);
+        background-color: #515A38;
+        color: #F4EBDD;
     }
 
-    /* ===== SELECTBOX ===== */
 
-    div[data-baseweb="select"] > div {
-        background-color: white !important;
-        border-radius: 12px !important;
-        color: #222222 !important;
+    /* =====================================================
+       AUDIO
+       ===================================================== */
+
+    .audio-title {
+        color: #4A5038;
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-top: 1.2rem;
+        margin-bottom: 0.5rem;
     }
 
-    /* ===== SIDEBAR ===== */
+
+    /* =====================================================
+       SEPARADORES
+       ===================================================== */
+
+    hr {
+        border: none;
+        height: 1px;
+        background-color: rgba(70, 75, 50, 0.25);
+        margin: 1.5rem 0;
+    }
+
+
+    /* =====================================================
+       SIDEBAR
+       Se conserva el contenido original
+       ===================================================== */
 
     section[data-testid="stSidebar"] {
-        background: #E8D5B7;
+        background-color: #AAB67D;
     }
 
     section[data-testid="stSidebar"] h2,
     section[data-testid="stSidebar"] h3,
     section[data-testid="stSidebar"] p {
-        color: #4A3520 !important;
+        color: #3E4630 !important;
     }
 
-    /* ===== SEPARADORES ===== */
 
-    hr {
-        border: none;
-        height: 1px;
-        background: rgba(91, 64, 40, 0.2);
-        margin: 2.5rem 0;
-    }
-
-    /* ===== TEXTO DE AUDIO ===== */
-
-    .audio-title {
-        color: #5B4028;
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin-top: 1.5rem;
-    }
-
-    /* ===== PIE ===== */
+    /* =====================================================
+       PIE DE PÁGINA
+       ===================================================== */
 
     .footer {
         text-align: center;
-        color: #876B4A;
-        margin-top: 3rem;
-        font-size: 0.9rem;
+        color: #596044;
+        margin-top: 2rem;
+        font-size: 0.85rem;
     }
 
 </style>
@@ -195,10 +272,7 @@ except:
 # ENCABEZADO
 # =========================================================
 
-st.markdown(
-    '<h1>🐢 Fábulas a Audio 🐇</h1>',
-    unsafe_allow_html=True
-)
+st.title("Conversión de Texto a Audio")
 
 st.markdown(
     '<div class="autor">Hecho por: Simón Mesa Díaz</div>',
@@ -224,97 +298,96 @@ with col2:
 
 st.markdown("""
 <div class="card">
-    <h2>🐇 La Liebre y la Tortuga</h2>
-""", unsafe_allow_html=True)
 
-st.markdown("""
+<h2>Una pequeña Fábula: La Liebre y la Tortuga</h2>
+
 <div class="cuento">
 
 En el mundo de los animales vivía una liebre muy orgullosa,
 porque ante todos decía que era la más veloz. Por eso,
 constantemente se reía de la lenta tortuga.
 
-<br><br>
+<br>
 
 —¡Miren la tortuga! ¡Eh, tortuga, no corras tanto que te vas
 a cansar de ir tan de prisa! —decía la liebre riéndose de la tortuga.
 
-<br><br>
+<br>
 
 Un día, conversando entre ellas, a la tortuga se le ocurrió
 de pronto hacerle una rara apuesta a la liebre.
 
-<br><br>
+<br>
 
 —Estoy segura de poder ganarte una carrera —le dijo.
 
-<br><br>
+<br>
 
 —¿A mí? —preguntó, asombrada, la liebre.
 
-<br><br>
+<br>
 
 —Pues sí, a ti. Pongamos nuestra apuesta en aquella piedra
 y veamos quién gana la carrera.
 
-<br><br>
+<br>
 
 La liebre, muy divertida, aceptó.
 
-<br><br>
+<br>
 
 Todos los animales se reunieron para presenciar la carrera.
-Se señaló cuál iba a ser el camino y la llegada. Una vez estuvo
-listo, comenzó la carrera entre grandes aplausos.
+Se señaló cuál iba a ser el camino y la llegada.
+Una vez estuvo listo, comenzó la carrera entre grandes aplausos.
 
-<br><br>
+<br>
 
 Confiada en su ligereza, la liebre dejó partir a la tortuga
 y se quedó remoloneando. ¡Vaya si le sobraba el tiempo para
 ganarle a tan lerda criatura!
 
-<br><br>
+<br>
 
 Luego, empezó a correr, corría veloz como el viento mientras
 la tortuga iba despacio, pero, eso sí, sin parar.
 
-<br><br>
+<br>
 
 Enseguida, la liebre se adelantó muchísimo. Se detuvo al lado
 del camino y se sentó a descansar.
 
-<br><br>
+<br>
 
 Cuando la tortuga pasó por su lado, la liebre aprovechó para
 burlarse de ella una vez más. Le dejó ventaja y nuevamente
 emprendió su veloz marcha.
 
-<br><br>
+<br>
 
 Varias veces repitió lo mismo, pero, a pesar de sus risas,
 la tortuga siguió caminando sin detenerse.
 
-<br><br>
+<br>
 
 Confiada en su velocidad, la liebre se tumbó bajo un árbol
 y ahí se quedó dormida.
 
-<br><br>
+<br>
 
 Mientras tanto, pasito a pasito, y tan ligero como pudo,
 la tortuga siguió su camino hasta llegar a la meta.
 
-<br><br>
+<br>
 
 Cuando la liebre se despertó, corrió con todas sus fuerzas
 pero ya era demasiado tarde, la tortuga había ganado la carrera.
 
-<br><br>
+<br>
 
 Aquel día fue muy triste para la liebre y aprendió una lección
 que no olvidaría jamás:
 
-<br><br>
+<br>
 
 <b>No hay que burlarse jamás de los demás.</b>
 
@@ -341,35 +414,28 @@ with col2:
 
 st.markdown("""
 <div class="card">
-    <h2>🐱 El Gato y el Ratón</h2>
-""", unsafe_allow_html=True)
 
-st.markdown("""
+<h2>Una pequeña Fábula: El Gato y el Ratón</h2>
+
 <div class="cuento">
 
 ¡Ay! —dijo el ratón—. El mundo se hace cada día más pequeño.
-
-<br><br>
-
 Al principio era tan grande que le tenía miedo. Corría y corría
 y por cierto que me alegraba ver esos muros, a diestra y siniestra,
 en la distancia.
 
-<br><br>
+<br>
 
 Pero esas paredes se estrechan tan rápido que me encuentro en
 el último cuarto y ahí en el rincón está la trampa sobre la cual
 debo pasar.
 
-<br><br>
+<br>
 
 Todo lo que debes hacer es cambiar de rumbo —dijo el gato...
+y se lo comió.
 
-<br><br>
-
-<b>...y se lo comió.</b>
-
-<br><br>
+<br>
 
 <i>Franz Kafka.</i>
 
@@ -384,36 +450,45 @@ Todo lo que debes hacer es cambiar de rumbo —dijo el gato...
 
 st.markdown("""
 <div class="audio-card">
-    <h2>🎧 Convierte una fábula en audio</h2>
-    <p style="color:#6B5745;">
-        Copia o escribe un texto y selecciona el idioma
-        en el que quieres escucharlo.
-    </p>
+
+<h2>Conversión de texto a audio</h2>
+
+<div class="descripcion">
+Quieres escucharlo? Copia el texto que deseas convertir en audio.
+</div>
+
 </div>
 """, unsafe_allow_html=True)
 
 
+# =========================================================
+# TEXT AREA
+# =========================================================
+
 text = st.text_area(
-    "Texto para escuchar",
-    placeholder="Escribe o pega aquí el texto de la fábula...",
-    height=200
+    "Ingrese El texto a escuchar.",
+    height=180
 )
 
+
+# =========================================================
+# IDIOMA
+# =========================================================
 
 option_lang = st.selectbox(
     "Selecciona el lenguaje",
     ("Español", "English")
 )
 
-
 if option_lang == "Español":
     lg = "es"
-else:
+
+if option_lang == "English":
     lg = "en"
 
 
 # =========================================================
-# FUNCIÓN TEXTO A AUDIO
+# TEXTO A AUDIO
 # =========================================================
 
 def text_to_speech(text, tld, lg):
@@ -428,7 +503,6 @@ def text_to_speech(text, tld, lg):
     except:
         my_file_name = "audio"
 
-    # Evitar caracteres problemáticos en el nombre
     my_file_name = "".join(
         c for c in my_file_name
         if c.isalnum() or c in (" ", "_", "-")
@@ -437,19 +511,23 @@ def text_to_speech(text, tld, lg):
     if not my_file_name:
         my_file_name = "audio"
 
-    tts.save(f"temp/{my_file_name}.mp3")
+    tts.save(
+        f"temp/{my_file_name}.mp3"
+    )
 
     return my_file_name, text
 
 
 # =========================================================
-# BOTÓN DE CONVERSIÓN
+# BOTÓN
 # =========================================================
 
-if st.button("🔊 Convertir a Audio"):
+if st.button("Convertir a Audio"):
 
     if text.strip() == "":
-        st.warning("Primero escribe o pega un texto para convertirlo en audio.")
+        st.warning(
+            "Primero escribe o pega un texto para convertirlo en audio."
+        )
 
     else:
 
@@ -467,7 +545,7 @@ if st.button("🔊 Convertir a Audio"):
         audio_bytes = audio_file.read()
 
         st.markdown(
-            '<div class="audio-title">🎵 Tu audio:</div>',
+            '<div class="audio-title">Tu audio:</div>',
             unsafe_allow_html=True
         )
 
@@ -479,7 +557,7 @@ if st.button("🔊 Convertir a Audio"):
 
 
         # =================================================
-        # DESCARGA DEL AUDIO
+        # DESCARGA
         # =================================================
 
         with open(
@@ -500,7 +578,7 @@ if st.button("🔊 Convertir a Audio"):
             href = f'''
             <a href="data:application/octet-stream;base64,{bin_str}"
             download="{os.path.basename(bin_file)}">
-            ⬇️ Descargar {file_label}
+            Descargar {file_label}
             </a>
             '''
 
@@ -517,7 +595,7 @@ if st.button("🔊 Convertir a Audio"):
 
 
 # =========================================================
-# ELIMINAR AUDIOS ANTIGUOS
+# ELIMINAR ARCHIVOS ANTIGUOS
 # =========================================================
 
 def remove_files(n):
@@ -540,31 +618,13 @@ remove_files(7)
 
 
 # =========================================================
-# SIDEBAR
+# SIDEBAR ORIGINAL
 # =========================================================
 
 with st.sidebar:
 
-    st.markdown(
-        """
-        <h2>📖 Fábulas a Audio</h2>
-
-        <p>
-        Escribe o copia un texto y conviértelo
-        en una narración de audio.
-        </p>
-
-        <hr>
-
-        <p>
-        🐇 La Liebre y la Tortuga
-        </p>
-
-        <p>
-        🐱 El Gato y el Ratón
-        </p>
-        """,
-        unsafe_allow_html=True
+    st.subheader(
+        "Esrcibe y/o selecciona texto para ser escuchado."
     )
 
 
